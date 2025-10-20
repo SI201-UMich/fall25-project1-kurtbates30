@@ -1,7 +1,7 @@
 import csv
 import os
 
-print(os.getcwd())
+#print(os.getcwd())
 
 def load_csv(filename):
     base_path = os.path.dirname(__file__)
@@ -20,41 +20,47 @@ def get_state_data(rows):
     state_data = {}
     for row in rows:
         state = row["State"]
-        sales = round(float(row["Sales"]), 1)
-        profit = round(float(row["Profit"]), 1)
+        sales = float(row["Sales"])
+        profit = float(row["Profit"])
         if state not in state_data:
             state_data[state] = {"total_sales" : 0, "total_profit": 0}
         state_data[state]["total_sales"] += sales
         state_data[state]["total_profit"] += profit
+
+    for state, data in state_data.items():
+        data["avg_sales"] = round(data["total_sales"], 2)
+        data["avg_profit"] = round(data["total_profit"], 2)
+
+    return state_data
+    print(1)
+
+"""
+
+def state_avg_profit(state_data):
+    for state, data in state_data.items():
+        total_sales = data["total_sales"]
+        total_profit = data["total_profit"]
+        if total_sales != 0:
+            avg_profit = round(total_profit / total_sales, 2)
+        else:
+            avg_profit = 0
+        data["avg_profit"] = avg_profit
     return state_data
 
-def get_avg(state_data):
-
-    def state_avg_profit(state_data):
-        for state, data in state_data.items():
-            total_sales = data["total_sales"]
-            total_profit = data["total_profit"]
-            if total_sales != 0:
-                avg_profit = round(total_profit / total_sales, 2)
-            else:
-                avg_profit = 0
-            data["avg_profit"] = avg_profit
-        return state_data
-
-    def state_avg_sales(state_data):
-        for state, data in state_data.items():
-            total_sales = data["total_sales"]
-            total_profit = data["total_profit"]
-            if total_profit != 0:
-                avg_sales = round(total_sales / total_profit, 2)
-            else:
-                avg_sales = 0
-            data["avg_sales"] = avg_sales
-        return state_data
-    state_data = state_avg_profit(state_data)
-    state_data = state_avg_sales(state_data)
+def state_avg_sales(state_data):
+    for state, data in state_data.items():
+        total_sales = data["total_sales"]
+        total_profit = data["total_profit"]
+        if total_profit != 0:
+            avg_sales = round(total_sales / total_profit, 2)
+        else:
+            avg_sales = 0
+        data["avg_sales"] = avg_sales
     return state_data
-
+state_data = state_avg_profit(state_data)
+state_data = state_avg_sales(state_data)
+return state_data
+"""
 
 def avg_profit_catagory(rows):
     category_data = {}
@@ -64,15 +70,14 @@ def avg_profit_catagory(rows):
         sales = round(float(row["Sales"]), 1)
         profit = round(float(row["Profit"]), 1)
 
-        if category not in category_data:
-            category_data[category] = {"total_sales" : 0, "total_profit": 0}
-        category_data[category]["total_sales"] += sales
-        category_data[category]["total_profit"] += profit
+    if category not in category_data:
+        category_data[category] = {"total_sales" : 0, "total_profit": 0}
+    category_data[category]["total_sales"] += sales
+    category_data[category]["total_profit"] += profit
 
-    for category, data in category_data.items():
-        data["profit_margin"] = round(data["total_profit"] / data["total_sales"], 2)
+
     return category_data
-
+    print(2)
 
 
 def avg_discount_by_category(rows):
@@ -95,7 +100,7 @@ def avg_discount_by_category(rows):
         else:
             data["avg_discount"] = 0
    return cataegory_discounts
-
+   print(3)
 
 def profit_margin_by_category(rows):
     margins = {}
@@ -109,26 +114,23 @@ def profit_margin_by_category(rows):
             margins["category"] = {"total_profit": 0, "total_sales": 0}
         margins["category"]["total_profit"] += profit
         margins["category"]["total_sales"] += sales
+
     for category, data in margins.items():
         if data["total_sales"] != 0:
             data["profit_margin"] = round(data["total_profit"] / data["total_sales"], 2)
         else:
             data["profit_margin"] = 0
     return margins
+    print(4)
+#txt file write
 
-
+def write_results():
+    state_data = get_state_data(rows)
+    with open('state_data.txt', 'w') as file:
+        for state, data in state_data.items():
+            file.write(f"{state}: {data}\n")
 
 #funtion calls
 
 rows = load_csv('SampleSuperstore.csv')
 
-state_data = get_state_data(rows)
-state_data = get_avg(state_data)
-category_data = avg_profit_catagory(rows)
-cataegory_discounts = avg_discount_by_category(rows)
-print(cataegory_discounts)
-#state_data = state_avg_profit(state_data)
-#state_data = state_avg_sales(state_data)
-
-#for state, data in state_data.items():
-#    print(f"{state}: {data}")
