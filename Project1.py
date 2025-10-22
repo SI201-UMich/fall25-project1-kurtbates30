@@ -1,5 +1,12 @@
+# Project1.py
+# Author: Kurt Bates
+# Date: 10-21-2025
+# Description: Analyze sales data from SampleSuperstore.csv
+# Used Gen AI to help write test cases and functions
+
 import csv
 import os
+import unittest
 
 #print(os.getcwd())
 
@@ -30,37 +37,9 @@ def get_state_data(rows):
     for state, data in state_data.items():
         data["avg_sales"] = round(data["total_sales"], 2)
         data["avg_profit"] = round(data["total_profit"], 2)
-
-    return state_data
     print(1)
-
-"""
-
-def state_avg_profit(state_data):
-    for state, data in state_data.items():
-        total_sales = data["total_sales"]
-        total_profit = data["total_profit"]
-        if total_sales != 0:
-            avg_profit = round(total_profit / total_sales, 2)
-        else:
-            avg_profit = 0
-        data["avg_profit"] = avg_profit
     return state_data
 
-def state_avg_sales(state_data):
-    for state, data in state_data.items():
-        total_sales = data["total_sales"]
-        total_profit = data["total_profit"]
-        if total_profit != 0:
-            avg_sales = round(total_sales / total_profit, 2)
-        else:
-            avg_sales = 0
-        data["avg_sales"] = avg_sales
-    return state_data
-state_data = state_avg_profit(state_data)
-state_data = state_avg_sales(state_data)
-return state_data
-"""
 
 def avg_profit_catagory(rows):
     category_data = {}
@@ -70,14 +49,13 @@ def avg_profit_catagory(rows):
         sales = round(float(row["Sales"]), 1)
         profit = round(float(row["Profit"]), 1)
 
-    if category not in category_data:
-        category_data[category] = {"total_sales" : 0, "total_profit": 0}
-    category_data[category]["total_sales"] += sales
-    category_data[category]["total_profit"] += profit
+        if category not in category_data:
+            category_data[category] = {"total_sales" : 0, "total_profit": 0}
+        category_data[category]["total_sales"] += sales
+        category_data[category]["total_profit"] += profit
 
-
-    return category_data
     print(2)
+    return category_data
 
 
 def avg_discount_by_category(rows):
@@ -102,26 +80,7 @@ def avg_discount_by_category(rows):
    return cataegory_discounts
    print(3)
 
-def profit_margin_by_category(rows):
-    margins = {}
 
-    for row in rows:
-        category = row["Category"]
-        profit = float(row["profit"])
-        sales = float(row["sales"])
-
-        if category not in margins:
-            margins["category"] = {"total_profit": 0, "total_sales": 0}
-        margins["category"]["total_profit"] += profit
-        margins["category"]["total_sales"] += sales
-
-    for category, data in margins.items():
-        if data["total_sales"] != 0:
-            data["profit_margin"] = round(data["total_profit"] / data["total_sales"], 2)
-        else:
-            data["profit_margin"] = 0
-    return margins
-    print(4)
 #txt file write
 
 def write_results():
@@ -130,7 +89,6 @@ def write_results():
         for state, data in state_data.items():
             file.write(f"{state}: {data}\n")
 
-#funtion calls
+        return state_data
 
-rows = load_csv('SampleSuperstore.csv')
 
