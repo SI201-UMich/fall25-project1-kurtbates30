@@ -59,29 +59,27 @@ def main():
 
 
     def avg_discount_by_category(rows):
-    cataegory_discounts = {}
+        cataegory_discounts = {}
 
-    for row in rows:
-        category = row["Category"]
-        discount = round(float(row["Discount"]), 2)
-        quntity = int(row["Quantity"])
+        for row in rows:
+            category = row["Category"]
+            discount = round(float(row["Discount"]), 2)
+            quntity = int(row["Quantity"])
 
-        if category not in cataegory_discounts:
-            cataegory_discounts[category] = {"total_discount": 0, "count": 0}
-        cataegory_discounts[category]["total_discount"] += discount
-        cataegory_discounts[category]["count"] += 1
+            if category not in cataegory_discounts:
+                cataegory_discounts[category] = {"total_discount": 0, "count": 0}
+            cataegory_discounts[category]["total_discount"] += discount
+            cataegory_discounts[category]["count"] += 1
 
-    for category, data in cataegory_discounts.items():
-            
-            if data["count"] != 0:
-                data["avg_discount"] = round(data["total_discount"] / data["count"], 2)
-            else:
-                data["avg_discount"] = 0
-    return cataegory_discounts
-    print(3)
+        for category, data in cataegory_discounts.items():
+                
+                if data["count"] != 0:
+                    data["avg_discount"] = round(data["total_discount"] / data["count"], 2)
+                else:
+                    data["avg_discount"] = 0
+        return cataegory_discounts
+        print(3)
 
-
-    #txt file write
 
     def write_results():
         state_data = get_state_data(rows)
@@ -206,7 +204,7 @@ class TestProject1(unittest.TestCase):
         result = avg_discount_by_category(rows)
         self.assertEqual(result['Tech']['avg_discount'], 0)
 
-    # ---------- TEST profit_margin_by_category ----------
+    #  TEST profit margin by category 
     def test_profit_margin_general(self):
         """General: Compute profit margin per category."""
         rows = [{'Category': 'Tech', 'profit': '100', 'sales': '500'}]
